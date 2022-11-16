@@ -22,7 +22,7 @@ class ProductManager{
     }    
         
     getProductById = () =>{
-        if (this.products.code())
+        if (products.includes(code))
     }
     }
 }
