@@ -4,7 +4,7 @@ class ProductManager {
     this.path = "./DB.json";
   }
   //Función para agregar un nuevo producto
-  addProduct = (title, description, price, thumbnail, code, stock) => {
+  addProduct = async (title, description, price, thumbnail, code, stock) => {
     const product = {
       id: this.getProductId(),
       title,
@@ -36,7 +36,7 @@ class ProductManager {
   //Devuelve los productos cargados
   getProducts = async () => {
     if (fs.existsSync(this.path)) {
-      console.log("The file already exists");
+      console.log("El archivo ya existe");
       const activeFile = await fs.promise.readFile(this.path, "utf-8");
       const savedFile = JSON.parse(activeFile);
       return savedFile;
