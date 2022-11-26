@@ -1,0 +1,26 @@
+{
+  "name": "prueba",
+  "version": "1.0.0",
+  "description": "prueba a ver que onda",
+  "main": "inicio.js",
+  "scripts": {
+    "test": "no tengo"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/GerRodas/CH_BACKEND.git"
+  },
+  "keywords": [
+    "prueba",
+    "a",
+    "ver",
+    "que",
+    "onda"
+  ],
+  "author": "German",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GerRodas/CH_BACKEND/issues"
+  },
+  "homepage": "https://github.com/GerRodas/CH_BACKEND#readme"
+}
