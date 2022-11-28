@@ -1,10 +1,12 @@
+const fs = require("fs");
+
 class ProductManager {
   constructor() {
     this.products = [];
-    this.path = "./DB.json";
+    this.path = "./Productos.json";
   }
   //Función para agregar un nuevo producto
-  addProduct = (title, description, price, thumbnail, code, stock) => {
+  addProduct = async (title, description, price, thumbnail, code, stock) => {
     const product = {
       id: this.getProductId(),
       title,
@@ -26,6 +28,11 @@ class ProductManager {
         product.id
       );
     }
+    //agregar el guardado a archivo del addProduct con un append
+    const prod = JSON.stringify(product)    
+    const result = await fs.promises.writeFile(this.path, prod)
+    return (result)
+  }
   };
   //Generar el id del producto
   getProductId = () => {
@@ -33,10 +40,15 @@ class ProductManager {
     const productId = amount > 0 ? this.products[amount - 1].id + 1 : 1;
     return productId;
   };
+  
+  const product = new ProductManager();
+  product.addProduct("Auricular", "con cable", 25, "image", "codigo 1", 4);
+
+  /*
   //Devuelve los productos cargados
   getProducts = async () => {
     if (fs.existsSync(this.path)) {
-      console.log("The file already exists");
+      console.log("El archivo existe");
       const activeFile = await fs.promise.readFile(this.path, "utf-8");
       const savedFile = JSON.parse(activeFile);
       return savedFile;
@@ -61,7 +73,7 @@ class ProductManager {
       (element) => element.id == productId
     );
   };
-}
+
 //Se crea la constante "product"
 const product = new ProductManager();
 //Prueba sin nada cargado
@@ -79,7 +91,7 @@ console.log("-----------------------------------------------");
 //Se prueba lo mismo que la primera prueba, pero con los datos. Devuelve todo.
 console.log("Productos cargados:", product.getProducts());
 
-const fs = require("fs");
+
 
 const DB = product.getProducts();
 
@@ -94,3 +106,9 @@ fs.promises
   });
 
 console.log(jsonStr);
+*/
+
+
+
+
+

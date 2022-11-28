@@ -1,3 +1,5 @@
+const fs = require("fs");
+
 class ProductManager {
   constructor() {
     this.products = [];
@@ -44,6 +46,7 @@ class ProductManager {
       return [];
     }
   };
+  
   //Devuelve los productos teniendo en cuenta el valor "code"
   getProductById = (productId) => {
     const productFound = this.products.find(
@@ -79,9 +82,9 @@ console.log("-----------------------------------------------");
 //Se prueba lo mismo que la primera prueba, pero con los datos. Devuelve todo.
 console.log("Productos cargados:", product.getProducts());
 
-const fs = require("fs");
 
-const DB = product.getProducts();
+
+/*const DB = product.getProducts();
 
 const jsonStr = JSON.stringify(DB);
 fs.promises
@@ -94,3 +97,4 @@ fs.promises
   });
 
 console.log(jsonStr);
+*/
