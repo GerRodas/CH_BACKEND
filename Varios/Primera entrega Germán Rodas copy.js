@@ -1,3 +1,5 @@
+const fs = require ('fs')
+
 class ProductManager {
 
     constructor() {
@@ -5,34 +7,41 @@ class ProductManager {
         this.path = './DataBase.json'
     }
     //Función para agregar un nuevo producto
-    addProduct = (title, description, price, thumbnail, code, stock) => {
-        const product = {
-            id: this.getProductId(),
-            title,
-            description,
-            price,
-            thumbnail,
-            code,
-            stock
+    async addProduct ({title, description, price, thumbnail, code, stock}) {
+        try {
+            if (!title, !description, !price, !thumbnail, !code, !stock)
+                return {error: "Estos datos son obligatorios"};
+
+        const newProduct = {title, description, price, thumbnail, code, stock};
+        const products =await this.getProducts();
+
+        newProduct.ide = !products.length
+            ? 1
+            : products[products.length - 1].id + 1;
+        products.push(newProduct);
+
+        await fs.promises.writeFile(this.path, JSON.stringify(products, null, 3));
+
+        return newProduct;
         }
-        //Chequear códigos duplicados
-        const duplicatedCode = (element) => element.code == product.code;
-        if (!this.products.some(duplicatedCode)) {
-            this.products.push(product)
-        } else {
-            console.log("Un código está duplicado y es", product.title, "con el code número", product.id)
+        catch (error) {
+        console.log(error);
         }
+    
     }
-    //Generar el id del producto
-    getProductId = () => {
-        const amount = this.products.length;
-        const productId = (amount > 0) ? this.products[amount - 1].id + 1 : 1;
-        return productId;
-    }
+
     //Devuelve los productos cargados
-    getProducts = () => {
-        return this.products
-    }
+    async getProducts () {
+        try {
+            // leemos el archivo (asumiendo que existe, o podriamos verificarlo)
+            // y convertimos la respuesta a JS con JSON.parse
+            const response = await fs.promises.readFile(this.path, "utf-8");
+            return JSON.parse(response);
+          } 
+          catch (error) {
+            console.log(error);
+          }
+        }
     //Devuelve los productos teniendo en cuenta el valor "code"
     getProductById = (productId) => {
         const productFound = this.products.find(element => element.id == productId)
@@ -46,19 +55,10 @@ class ProductManager {
 
 
 }
-//Se crea la constante "product"
-const product = new ProductManager()
-//Prueba sin nada cargado
-console.log("Productos cargados:", product.getProducts());
-console.log("-----------------------------------------------")
-//Se empieza a cargar datos
-product.addProduct("Auricular", "con cable", 25, "image", "codigo 1", 4)
-product.addProduct("Auricular", "con cable", 25, "image", "codigo 1", 2)
-product.addProduct("Parlantes", "Bluetooth", 80, "image", "codigo 56", 4)
-product.addProduct("Mouse", "Inalambrico", 45, "image", "codigo 4", 4)
-console.log("-----------------------------------------------")
-//Se ingresa un número de "code" para probar
-product.getProductById(2)
-console.log("-----------------------------------------------")
-//Se prueba lo mismo que la primera prueba, pero con los datos. Devuelve todo.
-console.log("Productos cargados:", product.getProducts());
+
+const product = new ProductManagerFilesystem("./DataBase.json");
+const productOneSaved = await electronicProducts.saveProduct({
+    //     code: "CCC333",
+    //     title: "Ipad",
+    //     description: "Tablet",
+    //     price: 700,

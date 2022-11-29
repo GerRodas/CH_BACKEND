@@ -51,7 +51,7 @@ class ProductManagerFilesystem {
 
       products.push(newProduct);
 
-      await fs.promises.writeFile(this.path, JSON.stringify(products, null, 3));
+      await fs.promises.writeFile(this.path, JSON.stringify(products, null, 3));  
 
       return newProduct;
     } catch (error) {
