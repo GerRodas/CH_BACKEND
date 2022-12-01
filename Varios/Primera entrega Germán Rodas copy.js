@@ -4,7 +4,7 @@ class ProductManager {
 
     constructor() {
         this.products = []
-        this.path = './DataBase.json'
+        this.path = 'DataBase.json'
     }
     //Función para agregar un nuevo producto
     async addProduct ({title, description, price, thumbnail, code, stock}) {
@@ -15,12 +15,12 @@ class ProductManager {
         const newProduct = {title, description, price, thumbnail, code, stock};
         const products =await this.getProducts();
 
-        newProduct.ide = !products.length
+        newProduct.id = !products.length
             ? 1
             : products[products.length - 1].id + 1;
         products.push(newProduct);
 
-        await fs.promises.writeFile(this.path, JSON.stringify(products, null, 3));
+        await fs.promises.writeFile(this.path, JSON.stringify(products));
 
         return newProduct;
         }
@@ -56,9 +56,12 @@ class ProductManager {
 
 }
 
-const product = new ProductManagerFilesystem("./DataBase.json");
-const productOneSaved = await electronicProducts.saveProduct({
-    //     code: "CCC333",
-    //     title: "Ipad",
-    //     description: "Tablet",
-    //     price: 700,
+const product = new ProductManager();
+product.addProduct({
+         code: "CCC333",
+         title: "Ipad",
+         description: "Tablet",
+         price: 700,
+         thumbnail: "image",
+         stock : 4,
+})
