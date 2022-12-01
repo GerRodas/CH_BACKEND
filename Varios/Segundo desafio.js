@@ -3,10 +3,54 @@ const fs = require ('fs')
 class ProductManager {
 
     constructor() {
-        this.products = []
-        this.path = 'DataBase.json'
+        
+        this.path = './DataBase.json'
     }
-    //Función para agregar un nuevo producto
+
+    read = async () => {
+        if (fs.existsSync(this.path)){
+        return fs.promises.read(this.path, 'utf-8').then(r => JSON.parse(r))
+        }
+        return []
+    }
+    getNextId = () => {
+        const count = this.events.length
+        return (count > 0) ? this.events[count-1].id +1 : 1
+    }
+
+    write = list => {
+        return fs.promises.readFile(this.path, JSON.stringify(lista))
+    }
+
+    getproducts =async () => {
+        const data = await this.read()
+
+        return data
+    }
+
+    addProduct = async (obj) => {
+        const list =await this.read()
+        const nextID = this.getNextId()
+        obj.id = nextId
+
+        list.push(obj)
+
+        await this.write(list)
+    }
+    updateProduct = async (id, obj) => {
+        obj.id = id
+        const list = await this.read()
+        for (let i = 0; i < array.length; i++) {
+            if (list[i].id ==id){
+                list [i] = obj 
+                break
+            }
+            
+        }
+        await this.write(list)
+    }
+}
+    /* Función para agregar un nuevo producto
     async addProduct ({title, description, price, thumbnail, code, stock}) {
         try {
             if (!title, !description, !price, !thumbnail, !code, !stock)
@@ -56,12 +100,9 @@ class ProductManager {
 
 }
 
-const product = new ProductManager();
-product.addProduct({
-         code: "CCC333",
-         title: "Ipad",
-         description: "Tablet",
-         price: 700,
-         thumbnail: "image",
-         stock : 4,
-})
+const product = new ProductManagerFilesystem("./DataBase.json");
+const productOneSaved = await electronicProducts.saveProduct({
+    //     code: "CCC333",
+    //     title: "Ipad",
+    //     description: "Tablet",
+    //     price: 700,
