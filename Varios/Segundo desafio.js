@@ -2,36 +2,35 @@ const fs = require ('fs')
 
 class ProductManager {
 
-    constructor() {
+    constructor(path) {
         
-        this.path = './DataBase.json'
+        this.path = path
     }
 
-    read = async () => {
+    read = () => {
         if (fs.existsSync(this.path)){
-        return fs.promises.read(this.path, 'utf-8').then(r => JSON.parse(r))
+            return fs.promises.readFile(this.path, 'utf-8').then(r => JSON.parse(r))
         }
         return []
     }
-    getNextId = () => {
-        const count = this.events.length
-        return (count > 0) ? this.events[count-1].id +1 : 1
+    getNextId = list => {
+        const count = list.length
+        return (count > 0) ? list[count-1].id +1 : 1
     }
 
     write = list => {
-        return fs.promises.readFile(this.path, JSON.stringify(lista))
+        return fs.promises.writeFile(this.path, JSON.stringify(list))
     }
 
-    getproducts =async () => {
+    getproducts = async () => {
         const data = await this.read()
-
         return data
     }
 
     addProduct = async (obj) => {
-        const list =await this.read()
-        const nextID = this.getNextId()
-        obj.id = nextId
+        const list = await this.read()
+        const nextID = this.getNextId(list)
+        obj.id = nextID
 
         list.push(obj)
 
@@ -40,7 +39,7 @@ class ProductManager {
     updateProduct = async (id, obj) => {
         obj.id = id
         const list = await this.read()
-        for (let i = 0; i < array.length; i++) {
+        for (let i = 0; i < list.length; i++){
             if (list[i].id ==id){
                 list [i] = obj 
                 break
@@ -49,60 +48,52 @@ class ProductManager {
         }
         await this.write(list)
     }
-}
-    /* Función para agregar un nuevo producto
-    async addProduct ({title, description, price, thumbnail, code, stock}) {
-        try {
-            if (!title, !description, !price, !thumbnail, !code, !stock)
-                return {error: "Estos datos son obligatorios"};
+    getProductById = async (id) => {
+        const data = await this.read()
+        return data[id-1]
 
-        const newProduct = {title, description, price, thumbnail, code, stock};
-        const products =await this.getProducts();
-
-        newProduct.id = !products.length
-            ? 1
-            : products[products.length - 1].id + 1;
-        products.push(newProduct);
-
-        await fs.promises.writeFile(this.path, JSON.stringify(products));
-
-        return newProduct;
         }
-        catch (error) {
-        console.log(error);
-        }
+        
     
-    }
-
-    //Devuelve los productos cargados
-    async getProducts () {
-        try {
-            // leemos el archivo (asumiendo que existe, o podriamos verificarlo)
-            // y convertimos la respuesta a JS con JSON.parse
-            const response = await fs.promises.readFile(this.path, "utf-8");
-            return JSON.parse(response);
-          } 
-          catch (error) {
-            console.log(error);
-          }
+    
+    deleteProduct = async (id, obj) => {
+        obj.id = id
+        const list = await this.read()
+        for (let i = 0; i < list.length; i++){
+            if (list[i].id ==id){
+                list [i] = obj 
+                break
+            }
+            
         }
-    //Devuelve los productos teniendo en cuenta el valor "code"
-    getProductById = (productId) => {
-        const productFound = this.products.find(element => element.id == productId)
-        //Si el producto no es encontrado, devuelve el mensaje "No encontrado"
-        if (productFound) {
-            console.log("El producto es: ", productFound.title);
-        } else {
-            console.log("Producto no encontrado. Not found.");
-        }
+        await this.write(list)
     }
-
-
+   
 }
 
-const product = new ProductManagerFilesystem("./DataBase.json");
-const productOneSaved = await electronicProducts.saveProduct({
-    //     code: "CCC333",
-    //     title: "Ipad",
-    //     description: "Tablet",
-    //     price: 700,
+const producto = new ProductManager('DataBase.json');
+
+//get data by id?
+
+/*
+(async () => {
+
+    await producto.addProduct({
+            title: "Teclado",
+            description: "PS2",
+            price: 300,
+            thumbnail: "Imagen 0",
+            code: "abc122",
+            stock: 25,
+        })
+
+        
+        console.log(await producto.getproducts());
+    })()
+*/
+(async () =>{
+
+    console.log(await producto.getProductById(2));
+    
+})()
+
