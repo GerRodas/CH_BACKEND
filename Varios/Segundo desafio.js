@@ -27,12 +27,12 @@ class ProductManager {
         return data
     }
 
-    addProduct = async (obj) => {
+    addProduct = async (object) => {
         const list = await this.read()
         const nextID = this.getNextId(list)
-        obj.id = nextID
+        object.id = nextID
 
-        list.push(obj)
+        list.push(object)
 
         await this.write(list)
     }
@@ -49,26 +49,30 @@ class ProductManager {
         await this.write(list)
     }
     getProductById = async (id) => {
+        const data = await this.read() 
+        const object = data.find(i =>i.id === id);
+        if (object){
+            return object
+        } else {
+            return "Id no encontrado"
+        }
+    }
+     
+    deleteProduct = async (id) => {
+        
         const data = await this.read()
-        return data[id-1]
-
+        try {
+            const object = data.filter(i =>i.id !== id);
+            await this.write(object)
+            return "Objeto eliminado"
+        } catch (error) {
+            return "Objeto no encontrado"
+           
         }
         
-    
-    
-    deleteProduct = async (id, obj) => {
-        obj.id = id
-        const list = await this.read()
-        for (let i = 0; i < list.length; i++){
-            if (list[i].id ==id){
-                list [i] = obj 
-                break
-            }
-            
-        }
-        await this.write(list)
     }
-   
+ 
+    
 }
 
 const producto = new ProductManager('DataBase.json');
@@ -79,12 +83,12 @@ const producto = new ProductManager('DataBase.json');
 (async () => {
 
     await producto.addProduct({
-            title: "Teclado",
-            description: "PS2",
-            price: 300,
+            title: "Microfono",
+            description: "condenser",
+            price: 50,
             thumbnail: "Imagen 0",
             code: "abc122",
-            stock: 25,
+            stock: 20,
         })
 
         
@@ -93,7 +97,26 @@ const producto = new ProductManager('DataBase.json');
 */
 (async () =>{
 
-    console.log(await producto.getProductById(2));
+    console.log(await producto.deleteProduct(4));
     
 })()
 
+/*
+async deleteProduct (idDelete){
+    const pdelete = await this.getProducts();
+    if (pdelete[idDelete-1] === undefined){
+        console.log(" No se borro nada ");
+}else {
+    const newProduct = {}pdelete.splice(idDelete-1, 1);
+// console.log("array", pdelete, "array");pdelete.push(newProduct)
+
+deleteById = async id => {
+    try {
+        const readProducts = await fs.promises.readFile(this.path, 'utf-8');
+    const data = JSON.parse(readProducts);
+    const obj = data.filter(obj => obj.id !== id);
+    await this.writeFile(obj);}
+    catch(err) {
+        console.log(err);
+    }}
+    */
