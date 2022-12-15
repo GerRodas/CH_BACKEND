@@ -2,10 +2,10 @@ import express from "express";
 import __dirname from '/utils.js';
 import handlebars from "express-handlebars";
 import viewsRouter from '/routes/views.Router.js';
-import { Server } from "socket.io";
+import Server from "socket.io";
 
 const app = express();
-const httpServer = app.listen(8080, () => console.log("Listening on PORT 8080"));
+const httpServer = app.listen(8082, () => console.log("Listening on PORT 8080"));
 
 const io = new Server(httpServer);
 
