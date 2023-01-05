@@ -1,4 +1,4 @@
-const socket = io()
+const socket = io();
 
 let user;
 let chatBox = document.getElementById('chatBox')
