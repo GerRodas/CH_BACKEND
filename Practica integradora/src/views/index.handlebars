@@ -1,0 +1,11 @@
+
+<h1>Pokedex!!</h1>
+
+
+{{#each pokemons}}
+    <div>
+        <b> {{this.name}}</b> <i>{{this.id}}</i>
+        <img src="{{this.photo}}">
+        <i>{{this.type}}</i>
+    </div>
+{{/each}}
