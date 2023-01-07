@@ -9,8 +9,15 @@ router.get('/', async(req,res)=>{
     res.render("index", {})
 })
 
-router.get('/:name',(req,res)=>{
-    res.render('one',{})
+router.get('/create',(req,res)=>{
+    res.render('create',{})
+})
+
+router.get('/:name', async (req, res)=>{
+    const name = req.params.name
+    const pokemon = await pokeModel.findOne({name: name}).lean().exec()
+    
+    res.render('one', {pokemon})
 })
 
 export default router
