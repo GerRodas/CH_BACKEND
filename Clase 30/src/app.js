@@ -15,7 +15,7 @@ const transport = nodemailer.createTransport({
 app.get('/mail', async(req,res)=>{
     const result = await transport.sendMail({
         from: 'germanrodas@gmail.com',
-        to: 'r2coderhouse@gmail.com',
+        to: 'germanrodas@gmail.com',
         subject: 'Las fotis que pediste',
         html: `
         <div>
